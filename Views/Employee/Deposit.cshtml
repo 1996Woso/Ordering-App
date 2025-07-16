@@ -1,0 +1,61 @@
+﻿@using Ordering_App.Models.DTOs
+@model UpdateEmployeeDTO
+
+@if (TempData["Success"] != "" && TempData["Success"] != null)
+{
+    <div class="overlay-alert">
+        @await Html.PartialAsync("_SuccessAlert", new AlertModel {
+        Message = TempData["Success"]!.ToString(),
+        IsDivDisplayed = TempData["Success"] != "" && TempData["Success"] != null,
+        RedirectUrl = Url.Action("Employees", "Employee")
+        })
+    </div>
+}
+
+@if (TempData["Error"] != "" && TempData["Error"] != null)
+{
+    <div class="overlay-alert">
+        @await Html.PartialAsync("_ErrorAlert", new AlertModel {
+        Message = TempData["Error"]!.ToString(),
+        IsDivDisplayed = TempData["Error"] != "" && TempData["Error"] != null,
+        RedirectUrl = Url.Action("Deposit", "Employee")
+        })
+    </div>
+}
+<div class="card mt-4 small-box">
+    <div class="card-header heading-form">
+        <p>Make A Deposit</p>
+    </div>
+    <div class="card-body p-4">
+        <form method="post" asp-action="Deposit" asp-controller="Employee">
+            <input type="hidden" asp-for="EmployeeNumber" />
+            <input type="hidden" asp-for="LastDepositMonth" />
+            <div class="row">
+                    <div class="mb-3 col-md-12">
+                        <label asp-for="Balance"></label>
+                        <input asp-for="Balance" class="form-control edit-form-input" type="number" required/>
+                        <span asp-validation-for="Balance" class="text-danger"></span>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-6">
+                        <a href="/Emplyee/Emplyees" class=" btn btn-success w-100"><i
+                                class="bi bi-arrow-left-square w-100">
+                            </i> Go Back</a>
+                    </div>
+                    <div class="col-6">
+                        <button class="btn btn-success w-100" type="submit"><i class="bi bi-save"></i> Save</button>
+                    </div>
+                </div>
+        </form>
+    </div>
+</div>
+</div>
+
+@section Scripts {
+
+    @{
+        <partial name="_ValidationScriptsPartial" />
+    }
+
+}

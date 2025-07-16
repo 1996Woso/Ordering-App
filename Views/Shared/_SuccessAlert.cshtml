@@ -1,0 +1,35 @@
+﻿@model AlertModel
+
+@if (Model.IsDivDisplayed)
+{
+    <div class="mt-3 w-100 alert-box">
+        <div class="row">
+            <div class="col-md-12 text-end">
+                <div class="hover-btn">
+                    <form method="get" action="@Model.RedirectUrl">
+                        <button class="btn btn-close" aria-label="Dismiss alert" type="submit"></button>
+                    </form>
+                    <span>Dismiss</span>
+                </div>
+            </div>
+        </div>
+        <div class="text-center">
+            <span class="alert-icon">
+                <img src="~/Images/success-icon.png" alt="info icon" height="50px" width="50px" />
+            </span>
+        </div>
+        <div class="alert-message">
+            @Model.Message
+        </div>
+    </div>
+    <script>
+        setTimeout(() => {
+            const form = document.querySelector('.alert-box form');
+            if (form) {
+                form.submit();
+            }
+        }, 6000); 
+    </script>
+}
+
+

@@ -1,0 +1,105 @@
+﻿@using Ordering_App.Models.Domain
+@model IEnumerable<Restaurant>
+
+@if (!string.IsNullOrEmpty(TempData["Success"]?.ToString()))
+{
+	<div class="overlay-alert">
+		@await Html.PartialAsync("_SuccessAlert", new AlertModel {
+		Message = TempData["Success"]!.ToString(),
+		IsDivDisplayed = true,
+		RedirectUrl = Url.Action("Restaurants", "Restaurant")
+		})
+</div>
+}
+
+@if (!string.IsNullOrEmpty(TempData["Error"]?.ToString()))
+{
+	<div class="overlay-alert">
+		@await Html.PartialAsync("_ErrorAlert", new AlertModel {
+		Message = TempData["Error"]!.ToString(),
+		IsDivDisplayed = true,
+		RedirectUrl = Url.Action("Restaurants", "Restaurant")
+		})
+</div>
+}
+
+<div class="container-fluid" style="background-color: rgb(241, 234, 234);border-radius: 0.6rem;">
+	<div class="row">
+		<div class="col-12 mt-3">
+			<a class="btn btn-info" href="/Restaurant/AddRestaurant">
+			  <i class="bi bi-house-add text-dark"></i> Add New Restaurant
+			</a>
+		</div>
+	</div>
+	<div class="table-responsive">
+	<table class="table table-striped">
+		<thead>
+			<tr>
+				<th>Name</th>
+				<th>Location</th>
+				<th>Contact Number</th>
+				<th>Options</th>
+			</tr>
+		</thead>
+		<tbody>
+			@foreach (var item in Model)
+			{
+				<tr>
+						<td>@item.Name</td>
+						<td>@item.LocationDescription</td>
+						<td>@item.ContactNumber</td>
+					<td>
+						<div class="hover-btn">
+								<a class="btn" asp-action="RestaurantsDetails" asp-controller="Restaurant" asp-route-id="@item.Id"><i class="bi bi-info-circle text-info"></i></a>
+							<span>Details</span>
+						</div>
+						<div class="hover-btn">
+								<form asp-action="Delete" asp-controller="Restaurant" asp-route-id="@item.Id" method="post" onsubmit="return confirm('Are you sure?')">
+									<button type="submit" class="btn btn-outline-danger">
+										<i class="bi bi-trash"></i>
+									</button>
+									<span>Delete</span>
+								</form>
+						</div>
+						<div class="hover-btn">
+							<a asp-action="Edit" asp-controller="Restaurant" asp-route-id="@item.Id" class="btn"><i class="bi bi-pencil-square text-success"></i></a>
+							<span>Edit</span>
+						</div>
+						<div class="hover-btn">
+							<a asp-action="AddMenuItem" asp-controller="MenuItem" asp-route-id="@item.Id" class="btn"><i class="bi bi-bag-plus-fill text-secondary"></i></a>
+							<span>Add Item</span>
+						</div>
+					</td>
+				</tr>
+			}
+		</tbody>
+	</table>
+</div>
+<div class="row mt-3">
+	<div class="col-12 d-flex justify-content-center">
+		<nav aria-label="Page navigation"></nav>
+		<ul class="pagination justify-content-center">
+			<li class="page-item @(ViewBag.CurrentPage == 1 ? "disabled" : "")">
+				<a class="page-link" asp-action="Restaurants" asp-route-pageNumber="@(ViewBag.CurrentPage - 1)"
+					style="width:5rem;">Previous</a>
+			</li>
+
+			@for (int i = 1; i <= ViewBag.TotalPages; i++)
+			{
+				<li class="page-item @(ViewBag.CurrentPage == i ? "active" : "")">
+					@if (i <= 2)
+					{
+						<a class="page-link" asp-action="Restaurants" asp-route-pageNumber="@i">@i</a>
+					}
+				</li>
+			}
+
+			<li class="page-item @(ViewBag.CurrentPage == ViewBag.TotalPages ? "disabled" : "")">
+				<a class="page-link" asp-action="Restaurants" asp-route-pageNumber="@(ViewBag.CurrentPage + 1)"
+					style="width:5rem;">Next</a>
+			</li>
+		</ul>
+		</nav>
+	</div>
+</div>
+</div>

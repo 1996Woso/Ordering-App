@@ -1,0 +1,79 @@
+﻿@using Ordering_App.Models.DTOs
+@model AddMenuItemDTO
+
+@{
+    var id = TempData["RestaurantId"];
+}
+
+@if (TempData["Success"] != "" && TempData["Success"] != null)
+{
+    <div class="overlay-alert">
+        @await Html.PartialAsync("_SuccessAlert", new AlertModel {
+        Message = TempData["Success"]!.ToString(),
+        IsDivDisplayed = TempData["Success"] != "" && TempData["Success"] != null,
+        RedirectUrl = Url.Action("Restaurants", "Restaurant")
+        })
+</div>
+}
+
+@if (TempData["Error"] != "" && TempData["Error"] != null)
+{
+    <div class="overlay-alert">
+        @await Html.PartialAsync("_ErrorAlert", new AlertModel {
+        Message = TempData["Error"]!.ToString(),
+        IsDivDisplayed = TempData["Error"] != "" && TempData["Error"] != null,
+        RedirectUrl = Url.Action("AddMenuItem", "MenuItem")
+        })
+</div>
+}
+<div class="card mt-4 small-box">
+    <div class="card-header heading-form">
+        <p>Add New Restaurant</p>
+    </div>
+    <div class="card-body p-4">
+        <form method="post" asp-action="AddMenuItem" asp-controller="MenuItem">
+            <input value="@id" name="id" hidden>
+            <div class="row">
+                <div class="mb-3 col-md-12">
+                    <label asp-for="Name"></label>
+                    <input asp-for="Name" class="form-control" placeholder="XXXX XXXX XXXX" required />
+                    <span asp-validation-for="Name" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="row">
+                <div class="mb-3 col-md-12">
+                    <label asp-for="Description"></label>
+                    <input asp-for="Description" class="form-control" placeholder="XXXX XXXX XXXX"
+                        required />
+                    <span asp-validation-for="Description" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="row">
+                <div class="mb-3 col-md-12">
+                    <label asp-for="Price"></label>
+                    <input asp-for="Price" class="form-control" type="number"
+                        required />
+                    <span asp-validation-for="Price" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-6">
+                    <a href="/Restaurant/Restaurants" class=" btn btn-success w-100"><i
+                            class="bi bi-arrow-left-square w-100">
+                        </i> Go Back</a>
+                </div>
+                <div class="col-6">
+                    <button class="btn btn-success w-100" type="submit"><i class="bi bi-save"></i> Save</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+
+    @{
+        <partial name="_ValidationScriptsPartial" />
+    }
+
+}

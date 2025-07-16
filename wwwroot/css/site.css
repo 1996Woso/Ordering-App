@@ -1,0 +1,229 @@
+html {
+  font-size: 14px;
+}
+
+@media (min-width: 768px) {
+  html {
+    font-size: 16px;
+  }
+}
+
+.btn:focus, .btn:active:focus, .btn-link.nav-link:focus, .form-control:focus, .form-check-input:focus {
+  box-shadow: 0 0 0 0.1rem white, 0 0 0 0.25rem #258cfb;
+}
+
+html {
+  position: relative;
+  min-height: 100%;
+}
+
+body {
+  margin-bottom: 60px;
+}
+/*table, th, td {
+    border: 1px solid black;
+    border-collapse: collapse;
+}*/
+nav a:hover {
+    background-color: transparent !important;
+    color: black !important;
+    border-radius: 40px;
+    transform: scale(1.1);
+}
+
+.btn1:hover {
+    background-color: black;
+    color: white;
+    border-radius: 4px;
+}
+/*THYIS IS FOR GIF*/
+.loading-spinner {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+#preloader {
+    background-color: transparent;
+    height: 100vh;
+    width: 100%;
+    position: fixed;
+    z-index: 100;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+/*THIS ADDS A LINE */
+.divider-text:before,
+.divider-text:after{
+    color:white;
+    content: "";
+    flex:1;
+    border-bottom: 1px solid #555;
+    margin: auto 0.25rem;
+    box-shadow: 0 -2px;
+}
+/*THIS IS FOR HOVERING A BUTTON*/
+
+/*hover-btn class*/
+.hover-btn {
+    position: relative;
+    cursor: pointer;
+    display: inline-block;
+}
+/*hover-btn styling*/
+.hover-btn a button{
+    padding: 10px 20px;
+    font-size: 1rem;
+    border: 2px solid #555;
+    border-radius: 4px !important;
+    background-color: white;
+    transition: box-shadow 0.3s ease, border 0.3s ease;
+    cursor: pointer;
+}
+/*Shadow effect on hover*/
+/*.hover-btn:hover {
+    box-shadow: 0 0 10px rgb(0,0,0,0.5);
+    border-color: #333;
+}*/
+/*Hidden tooltip text by default*/
+    .hover-btn span {
+        visibility: hidden;
+        position: absolute;
+        top: 1.8rem;
+        left: -1.5rem;
+        background-color: black;
+        color: white;
+        padding: 5px;
+        border-radius: 5px !important;
+        z-index: 1;
+        opacity: 0;
+        transition: opacity 0.3s ease;
+        /* Ensure text fills the content */
+        white-space: nowrap;
+        font-size: 0.8rem;
+   /*     width: auto;
+        max-width: none;*/
+    }
+/*Show the tooltip text when hovering over button*/
+.hover-btn:hover span {
+    visibility:visible;
+    opacity:1;
+}
+/* button {
+    border-radius: 0px !important;
+    height: 3rem;
+    font-weight: bold;
+       outline: none !important;
+    border:none !important;
+} */
+/*a{
+    border-radius: 0px !important;
+    height: 3rem;
+    font-weight: bold;
+}*/
+
+label {
+    font-weight:bold;
+    font-size: 0.8rem;
+}
+th, td{
+    font-size: 0.8rem;
+}
+i.bi{
+    font-size: 1rem; /*Equivalent to fs-4*/
+}
+/*Tables*/
+table#myTable {
+    width: 100%;
+    table-layout: auto; /* Adjust column width automatically */
+}
+table#myTable th, table#myTable td {
+        white-space: nowrap; /* Prevent content wrapping in cells */
+        text-align: center; /* Center align content */
+        vertical-align: middle; /* Align content vertically */
+}
+/*Grid container*/
+.grid-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fit,minmax(8rem,1fr));
+    gap: 1rem;
+    justify-content: center;
+}
+/*----------------------------*/
+.small-box{
+    max-width: 600px;
+    margin: 50px auto 0;
+}
+.heading-form {
+    background-color: transparent;
+/*    border-radius: 0.4rem;*/
+    text-align: center;
+    color: black;
+    font-weight: bold;
+    font-size: 1rem;
+}
+/*For alert messages*/
+.alert-box {
+    background-color: white;
+/*    border: 2px solid cadetblue;*/
+    padding: 10px;
+    border-radius: 8px;
+}
+
+.alert-icon {
+    display: inline-block;
+    border: 2px solid cadetblue;
+    border-radius: 50%;
+    padding: 5px;
+}
+
+    .alert-icon img {
+        opacity: 0.7; /* Adjust transparency */
+    }
+
+.alert-message {
+    font-size: small;
+    text-align: center;
+}
+/************/
+.overlay-alert{
+    position: fixed;
+    top: 20px;
+    left: 50%;
+    transform: translate(-50%);
+    z-index: 1050;
+    min-width: 400px;
+    max-width: 600px;
+    border: 2px solid cadetblue;
+    background-color: white;
+
+}
+/*------------------------OVERRIDE CARD STYLES---------------------------*/
+.card {
+    background-color: transparent !important;
+    border: 1px solid #929292 !important;
+    box-shadow: none !important;
+}
+
+.card-header {
+    border-bottom: none !important;
+    height: 2rem !important;
+}
+
+.card-header-tabs {
+    background-color: transparent !important;
+    border-bottom: none !important;
+}
+/*-------------------------------------------------------*/
+button, a {
+    font-size: 0.8rem !important;
+    transition: background-color 0.3s ease;
+    font-weight: bold !important;
+}
+
+.btn-dark:hover {
+    background-color: rgba(0,0,0,0.7);
+    color: white;
+}
+
