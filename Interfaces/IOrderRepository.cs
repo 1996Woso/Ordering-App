@@ -13,6 +13,7 @@ public interface IOrderRepository
     Task<PagedList<Order>> GetAllAsync(UserParams userParams);
     Task<bool> SaveAllAsync();
     Task<List<string>> OrderStatusesAsync();
+    Task<List<string>> PossibleStatusesAsync();
 
 
 }

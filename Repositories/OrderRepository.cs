@@ -42,14 +42,29 @@ public class OrderRepository : IOrderRepository
         return await PagedList<Order>.CreateAsync(query, userParams.PageNumber, userParams.PageSize);
     }
 
-    public Task<PagedList<Order>> GetByEmployeeId(UserParams userParams, int id)
+    public async Task<PagedList<Order>> GetByEmployeeId(UserParams userParams, int id)
     {
-        throw new NotImplementedException();
+       var query = dataContext.Orders.Where(x => x.EmployeeId == id).AsQueryable();
+        //Total Price filtering
+        if (userParams.MinTotalPrice > 0) query = query.Where(x => x.TotalAmount>= userParams.MinTotalPrice);
+        if (userParams.MaxTotalPrice < decimal.MaxValue) query = query.Where(x => x.TotalAmount <= userParams.MaxTotalPrice);
+        //Last deposit month
+        if (!userParams.OrderStatus.IsNullOrEmpty())
+        {
+            query = query.Where(x => x.Status == userParams.OrderStatus);
+        }
+        if (!userParams.OrderDate.IsNullOrEmpty())
+        {
+            DateTime orderDate =  DateTime.Parse(userParams.OrderDate!);
+            query = query.Where(x => x.OrderDate.Date == orderDate.Date);
+        }
+     
+        return await PagedList<Order>.CreateAsync(query, userParams.PageNumber, userParams.PageSize);
     }
 
-    public Task<Order?> GetByIdAsync(int id)
+    public async Task<Order?> GetByIdAsync(int id)
     {
-        throw new NotImplementedException();
+        return await dataContext.Orders.FirstOrDefaultAsync(x => x.OrderId == id);
     }
 
     public async Task<List<string>> OrderStatusesAsync()
@@ -60,13 +75,25 @@ public class OrderRepository : IOrderRepository
             .ToListAsync();
     }
 
+    public async Task<List<string>> PossibleStatusesAsync()
+    {
+        await Task.Delay(0);
+        var list = new List<string>()
+        {
+            "Pending", "Preparing", "Delivering", "Delivered"
+        };
+        return list;
+    }
+
     public async Task<bool> SaveAllAsync()
     {
         return await dataContext.SaveChangesAsync() > 0;
     }
 
-    public Task<Order> UpdateAsync(Order order)
+    public async Task<Order> UpdateAsync(Order order)
     {
-        throw new NotImplementedException();
+        await Task.Delay(0);
+        dataContext.Orders.Update(order);
+        return order;
     }
 }

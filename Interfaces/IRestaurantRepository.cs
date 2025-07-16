@@ -11,6 +11,7 @@ public interface IRestaurantRepository
         Task<Restaurant> UpdateAsync(Restaurant restaurant);
         Task<Restaurant> DeleteAsync(Restaurant restaurant);
         Task<Restaurant?> GetByIdAsync(int id);
+        Task<PagedList<Restaurant>> GetPagedByIdAsync(UserParams userParams, int id);
         Task<PagedList<Restaurant>> GetAllAsync(UserParams userParams);
         Task<bool> SaveAllAsync();
         Task<bool> RestaurantExistsAsync(AddRestaurantDTO addRestaurantDTO);

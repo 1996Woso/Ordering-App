@@ -15,3 +15,20 @@ function pasteDigits(event, inputId, maxLength) {
     document.getElementById(inputId).value = only_digits;
     return false;
 }
+
+/* Data table*/
+function initializeDatatable(tableId) {
+    $(document).ready(function () {
+        $(`#${tableId}`).DataTable({
+            autoWidth: false, // Prevent DataTables from automatically resizing
+            scrollY: "100vh",
+            scrollX: "100vh",
+            scrollCollapse: true,
+            paging: true,
+            pagingType: "full_numbers",
+            columnDefs: [
+                { targets: '_all', className: 'dt-center' } // Center align all columns
+            ]
+        });
+    });
+}

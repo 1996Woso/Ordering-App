@@ -1,5 +1,6 @@
 using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.IdentityModel.Tokens;
 using Ordering_App.Interfaces;
 using Ordering_App.Models;
 using Ordering_App.Models.Domain;
@@ -52,12 +53,43 @@ namespace Ordering_App.Controllers
             return View();
         }
         [HttpGet]
-        public async Task<IActionResult> RestaurantsDetails(int id)
+        public async Task<IActionResult> RestaurantsDetails(int id, [FromQuery] UserParams userParams
+        ,string menuItemName,decimal minPrice, decimal maxPrice, string menuItemDescription)
         {
-            var items = await restaurantRepository.GetByIdAsync(id);
-            return View(items);
+            // var items = await restaurantRepository.GetByIdAsync(id);
+            // return View(items);
+            
+            var restaurants = await restaurantRepository.GetPagedByIdAsync(userParams, id);
+            var restaurant = restaurants.FirstOrDefault();
+
+            var filteredItems = restaurant.MenuItems.AsQueryable();
+
+            if (!string.IsNullOrEmpty(userParams.MenuItemName))
+                filteredItems = filteredItems.Where(m => m.Name.ToLower().Contains(userParams.MenuItemName.ToLower()));
+
+            if (!string.IsNullOrEmpty(userParams.MenuItemDescription))
+                filteredItems = filteredItems.Where(m => m.Description.ToLower().Contains(userParams.MenuItemDescription.ToLower()));
+
+            if (userParams.MinPrice > 0)
+                filteredItems = filteredItems.Where(m => m.Price >= userParams.MinPrice);
+
+            if (userParams.MaxPrice < decimal.MaxValue)
+                filteredItems = filteredItems.Where(m => m.Price <= userParams.MaxPrice);
+
+            // Overwrite items in the restaurant
+            restaurant.MenuItems = filteredItems.ToList();
+
+            ViewBag.TotalCount = restaurants.TotalCount;
+            ViewBag.TotalPages = restaurants.TotalPages;
+            ViewBag.CurrentPage = userParams.PageNumber;
+            ViewBag.MinPrice = userParams.MinPrice;
+            ViewBag.MaxPrice = userParams.MaxPrice;
+            ViewBag.Description = userParams.MenuItemDescription;
+            ViewBag.ItemName = userParams.MenuItemName;
+            
+            return View(restaurant);
         }
-          [HttpGet]
+        [HttpGet]
         public async Task<IActionResult> Edit(int id)
         {
             var restaurant = await restaurantRepository.GetByIdAsync(id);

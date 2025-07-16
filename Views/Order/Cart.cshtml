@@ -1,66 +1,66 @@
 ﻿@using Ordering_App.Models.Domain
-@model IEnumerable<MenuItem>
+@model CartViewModel
 
-@if (TempData["Success"] != "" && TempData["Success"] != null)
+@if ((string?)TempData["Success"] != "" && TempData["Success"] != null)
 {
     <div class="overlay-alert">
         @await Html.PartialAsync("_SuccessAlert", new AlertModel {
         Message = TempData["Success"]!.ToString(),
-        IsDivDisplayed = TempData["Success"] != "" && TempData["Success"] != null,
+        IsDivDisplayed = (string?)TempData["Success"] != "" && TempData["Success"] != null,
         RedirectUrl = Url.Action("Restaurants", "Restaurant")
         })
 </div>
 }
 
-@if (TempData["Error"] != "" && TempData["Error"] != null)
+@if ((string?)TempData["Error"] != "" && TempData["Error"] != null)
 {
     <div class="overlay-alert">
         @await Html.PartialAsync("_ErrorAlert", new AlertModel {
         Message = TempData["Error"]!.ToString(),
-        IsDivDisplayed = TempData["Error"] != "" && TempData["Error"] != null,
-        RedirectUrl = Url.Action("Cart", "Order")
+        IsDivDisplayed = (string?)TempData["Error"] != "" && TempData["Error"] != null,
+        RedirectUrl = Url.Action("Orders", "Order")
         })
 </div>
 }
-@{
-    decimal totalAmount = 0;
-    foreach(var item in Model)
-    {
-        totalAmount += item.Price;
-    }
-    var employeeId = 1;
-}
+
 <h3>Your Cart</h3>
 
 <table class="table">
     <thead>
         <tr>
             <th>Name</th>
-            <th>Price (R)</th>
+            <th>Unit Price (R)</th>
+            <th>Quantity</th>
+            <th>Subtotal (R)</th>
             <th>Description</th>
         </tr>
     </thead>
     <tbody>
-        @foreach (var item in Model)
+        @foreach (var item in Model.Items)
         {
             <tr>
-                <td>@item.Name</td>
-                <td>@item.Price</td>
-                <td>@item.Description</td>
+                <td>@item.MenuItem.Name</td>
+                <td>@item.MenuItem.Price</td>
+                <td>@item.Quantity</td>
+                <td>@(item.MenuItem.Price * item.Quantity)</td>
+                <td>@item.MenuItem.Description</td>
             </tr>
         }
     </tbody>
 </table>
 
-<p><strong>Total:</strong> R @totalAmount</p>
+<p><strong>Total:</strong> R @Model.TotalAmount</p>
+
 
 <form asp-action="PlaceOrder" asp-controller="Order" method="post">
-    @foreach (var item in Model)
+    @for (int i = 0; i < Model.Items.Count; i++)
     {
-        <input type="hidden" name="SelectedMenuItemIds" value="@item.Id" />
+        <input type="hidden" name="SelectedMenuItemIds" value="@Model.Items[i].MenuItem.Id" />
+        <input type="hidden" name="NumberOfSelectedItems" value="@Model.Items[i].Quantity" />
     }
-    <input value="@totalAmount" name="totalAmount" hidden />
-    <input value="@employeeId" name="employeeId" hidden />
+
+    <input type="hidden" name="totalAmount" value="@Model.TotalAmount" />
+    <input type="hidden" name="employeeId" value="@Model.EmployeeId" />
 
     <button type="submit" class="btn btn-success">
         <i class="bi bi-check-circle"></i> Confirm & Place Order

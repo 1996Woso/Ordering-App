@@ -6,7 +6,8 @@ namespace Ordering_App.Context
 {
     public class DataContext : DbContext
     {
-        public DataContext( DbContextOptions<DataContext> options) : base(options) { 
+        public DataContext(DbContextOptions<DataContext> options) : base(options)
+        {
         }
 
         public DbSet<Employee> Employees { get; set; }
@@ -53,6 +54,68 @@ namespace Ordering_App.Context
                 .WithOne(x => x.MenuItem)
                 .HasForeignKey(x => x.MenuItemId)
                 .IsRequired();
+
+
+
+            // --- Seeding 5 Employees ---
+            modelBuilder.Entity<Employee>().HasData(
+                Enumerable.Range(1, 5).Select(i => new Employee
+                {
+                    Id = i,
+                    Name = $"Employee {i}",
+                    EmployeeNumber = Guid.NewGuid(),
+                    Balance = 1000 + i * 250,
+                    LastDepositMonth = "January 2025",
+                    MonthlyDepositTotal = i * 250
+                }).ToArray()
+            );
+
+            // --- Seeding 5 Restaurants ---
+            modelBuilder.Entity<Restaurant>().HasData(
+                Enumerable.Range(1, 5).Select(i => new Restaurant
+                {
+                    Id = i,
+                    Name = $"Restaurant {i}",
+                    LocationDescription = $"Location {i}",
+                    ContactNumber = $"011000000{i}"
+                }).ToArray()
+            );
+
+            // --- Seeding 5 MenuItems ---
+            modelBuilder.Entity<MenuItem>().HasData(
+                Enumerable.Range(1, 5).Select(i => new MenuItem
+                {
+                    Id = i,
+                    Name = $"Dish {i}",
+                    Description = $"Tasty dish number {i}",
+                    Price = 100 + i * 25,
+                    RestaurantId = (i % 5) + 1
+                }).ToArray()
+            );
+
+            // --- Seeding 5 Orders ---
+            modelBuilder.Entity<Order>().HasData(
+                Enumerable.Range(1, 5).Select(i => new Order
+                {
+                    OrderId = i,
+                    EmployeeId = (i % 5) + 1,
+                    OrderDate = new DateTime(2025, 7, 16).AddDays(i),
+                    TotalAmount = 250 * i,
+                    Status = "Pending"
+                }).ToArray()
+            );
+
+            // --- Seeding 5 OrderItems ---
+            modelBuilder.Entity<OrderItem>().HasData(
+                Enumerable.Range(1, 5).Select(i => new OrderItem
+                {
+                    Id = i,
+                    OrderId = (i % 5) + 1,
+                    MenuItemId = i,
+                    Quantity = 1 + i % 3,
+                    UnitPriceAtTimeOfOrder = 100 + i * 25
+                }).ToArray()
+            );
         }
     }
 }

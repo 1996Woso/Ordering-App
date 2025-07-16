@@ -1,0 +1,72 @@
+﻿@using Ordering_App.Interfaces
+@using Ordering_App.Models.Domain
+@model Order
+@inject IOrderRepository orderRepository
+
+@{
+    var statuses = await orderRepository.PossibleStatusesAsync();
+}
+@if ((string?)TempData["Success"] != "" && TempData["Success"] != null)
+{
+    <div class="overlay-alert">
+        @await Html.PartialAsync("_SuccessAlert", new AlertModel {
+        Message = TempData["Success"]!.ToString(),
+        IsDivDisplayed = (string?)TempData["Success"] != "" && TempData["Success"] != null,
+        RedirectUrl = Url.Action("Orders", "Order")
+        })
+</div>
+}
+
+@if ((string?)TempData["Error"] != "" && TempData["Error"] != null)
+{
+    <div class="overlay-alert">
+        @await Html.PartialAsync("_ErrorAlert", new AlertModel {
+        Message = TempData["Error"]!.ToString(),
+        IsDivDisplayed = (string?)TempData["Error"] != "" && TempData["Error"] != null,
+        RedirectUrl = Url.Action("Edit", "Order")
+        })
+</div>
+}
+<div class="card mt-4 small-box">
+    <div class="card-header heading-form">
+        <p>Edit Restaurant</p>
+    </div>
+    <div class="card-body p-4">
+        <form method="post" asp-action="Edit" asp-controller="Order">
+            <input type="hidden" asp-for="OrderId" />
+            <input type="hidden" asp-for="EmployeeId" />
+            <input type="hidden" asp-for="OrderDate" />
+            <input type="hidden" asp-for="TotalAmount" />
+            <div class="row">
+                <div class="mb-3 col-md-12">
+                    <label asp-for="Status"></label>
+                    <select asp-for="Status" class="form-control" required >
+                        @foreach(var status in statuses){
+                            <option value="@status">@status</option>
+                        }
+                    </select>
+                    <span asp-validation-for="Status" class="text-danger"></span>
+                </div>
+            </div>
+             
+            <div class="row">
+                <div class="col-6">
+                    <a href="/Order/Orders" class=" btn btn-success w-100"><i class="bi bi-arrow-left-square w-100">
+                        </i> Go Back</a>
+                </div>
+                <div class="col-6">
+                    <button class="btn btn-success w-100" type="submit"><i class="bi bi-save"></i> Save</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+</div>
+
+@section Scripts {
+
+    @{
+        <partial name="_ValidationScriptsPartial" />
+    }
+
+}

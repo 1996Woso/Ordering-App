@@ -260,3 +260,4 @@ C:\Users\eviwe\source\repos\Eviwe\Ordering-App\Ordering-App\bin\Debug\net8.0\run
 C:\Users\eviwe\source\repos\Eviwe\Ordering-App\Ordering-App\obj\Debug\net8.0\Ordering-App.csproj.AssemblyReference.cache
 C:\Users\eviwe\source\repos\Eviwe\Ordering-App\Ordering-App\obj\Debug\net8.0\Ordering.9359B947.Up2Date
 C:\Users\eviwe\source\repos\Eviwe\Ordering-App\Ordering-App\bin\Debug\net8.0\AutoMapper.dll
+C:\Users\eviwe\source\repos\Eviwe\Ordering-App\Ordering-App\obj\Debug\net8.0\Ordering-App.sourcelink.json

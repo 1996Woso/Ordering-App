@@ -15,5 +15,6 @@ namespace Ordering_App.Interfaces
         Task<bool> SaveAllAsync();
         Task<bool> UserExistsAsync(string name);
         Task<string> ConvertMonthAsync(string inpu);
+        Task<Employee> UpdateDalanceAsync(Employee employee);
     }
 }

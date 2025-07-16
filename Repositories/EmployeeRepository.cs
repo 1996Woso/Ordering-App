@@ -47,12 +47,7 @@ namespace Ordering_App.Repositories
             {
                 query = query.Where(x => x.LastDepositMonth == userParams.LastDepositMonth);
             }
-            // query = userParams.OrderBy switch
-            // {
-            //     "created" => query.OrderByDescending(x => x.CreatedAt),
-            //     _ => query.OrderByDescending(x => x.LastActive)
-            // };
-
+       
             return await PagedList<Employee>.CreateAsync(query, userParams.PageNumber, userParams.PageSize);
         }
 
@@ -63,8 +58,31 @@ namespace Ordering_App.Repositories
 
         public async Task<Employee> UpdateAsync(UpdateEmployeeDTO updateEmployeeDTO)
         {
+
+            var depositAmount = updateEmployeeDTO.Balance; 
             var employeeDM = await GetByEmpoyeeNoAsync(updateEmployeeDTO.EmployeeNumber);
-            employeeDM.Balance += updateEmployeeDTO.Balance;
+            var currentMonth = new DateTime(DateTime.Now.Year, DateTime.Now.Month, 1);
+            string storedMonth = employeeDM.LastDepositMonth;
+            if (storedMonth.IsNullOrEmpty()) storedMonth = currentMonth.ToString("MMMM yyyy");
+            DateTime lastDepositMonth = DateTime.ParseExact(storedMonth, "MMMM yyyy", CultureInfo.InvariantCulture);
+
+            // Reset monthly total if new month
+            if (lastDepositMonth != currentMonth)
+            {
+                employeeDM.MonthlyDepositTotal = 0;
+                employeeDM.LastDepositMonth = currentMonth.ToString("MMMM yyyy");;
+            }
+
+            // Update monthly deposit total
+            employeeDM.MonthlyDepositTotal += depositAmount;
+
+            // Calculate bonuses
+            int bonusUnits = (int)(employeeDM.MonthlyDepositTotal / 250);
+            int previousBonusUnits = (int)((employeeDM.MonthlyDepositTotal - depositAmount) / 250);
+            int newBonusUnits = bonusUnits - previousBonusUnits;
+
+            // Update balance
+            employeeDM.Balance += depositAmount + (newBonusUnits * 500);
             employeeDM.LastDepositMonth = updateEmployeeDTO.LastDepositMonth;
             dataContext.Employees.Update(employeeDM);
             return employeeDM;
@@ -88,6 +106,13 @@ namespace Ordering_App.Repositories
         public async Task<Employee?> GetByEmpoyeeNoAsync(Guid employeeNo)
         {
             return await dataContext.Employees.FirstOrDefaultAsync(x => x.EmployeeNumber == employeeNo);
+        }
+
+        public async Task<Employee> UpdateDalanceAsync(Employee employee)
+        {
+            await Task.Delay(0);
+            dataContext.Employees.Update(employee);
+            return employee;
         }
     }
 }

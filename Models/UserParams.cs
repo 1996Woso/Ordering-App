@@ -21,6 +21,7 @@
         public string? LastDepositMonth { get; set; } 
         public string? RestaurantName { get; set; }
         public string? MenuItemName { get; set; }
+        public string? MenuItemDescription { get; set; }
         public int EmployeeId { get; set; }
         public string OrderStatus { get; set; } = "Pending";
         public string? OrderDate { get; set; }

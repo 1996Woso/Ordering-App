@@ -7,9 +7,10 @@ namespace Ordering_App.Models.Domain
         public int Id { get; set; }
         public required string Name { get; set; }
         public Guid EmployeeNumber { get; set; } = Guid.NewGuid();
-        public decimal Balance { get; set; } = 0;
+        public decimal Balance { get; set; }
 
         public string? LastDepositMonth { get; set; }
+        public decimal MonthlyDepositTotal { get; set; }
 
         public List<Order>? Orders { get; set; }
         [NotMapped]

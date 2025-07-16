@@ -1,23 +1,23 @@
 ﻿@using Ordering_App.Models.DTOs
 @model UpdateEmployeeDTO
 
-@if (TempData["Success"] != "" && TempData["Success"] != null)
+@if ((string?)TempData["Success"] != "" && TempData["Success"] != null)
 {
     <div class="overlay-alert">
         @await Html.PartialAsync("_SuccessAlert", new AlertModel {
         Message = TempData["Success"]!.ToString(),
-        IsDivDisplayed = TempData["Success"] != "" && TempData["Success"] != null,
+        IsDivDisplayed = (string?)TempData["Success"] != "" && TempData["Success"] != null,
         RedirectUrl = Url.Action("Employees", "Employee")
         })
     </div>
 }
 
-@if (TempData["Error"] != "" && TempData["Error"] != null)
+@if ((string?)TempData["Error"] != "" && TempData["Error"] != null)
 {
     <div class="overlay-alert">
         @await Html.PartialAsync("_ErrorAlert", new AlertModel {
         Message = TempData["Error"]!.ToString(),
-        IsDivDisplayed = TempData["Error"] != "" && TempData["Error"] != null,
+        IsDivDisplayed = (string?)TempData["Error"] != "" && TempData["Error"] != null,
         RedirectUrl = Url.Action("Deposit", "Employee")
         })
     </div>
@@ -33,7 +33,7 @@
             <div class="row">
                     <div class="mb-3 col-md-12">
                         <label asp-for="Balance"></label>
-                        <input asp-for="Balance" class="form-control edit-form-input" type="number" required/>
+                        <input asp-for="Balance" class="form-control edit-form-input" type="number" value="0" required/>
                         <span asp-validation-for="Balance" class="text-danger"></span>
                     </div>
                 </div>
