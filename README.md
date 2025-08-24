@@ -1,27 +1,17 @@
-# 💘 Dating App
+# 🍽️ Staff Ordering System
 
-A web-based dating platform that enables users to create profiles, discover potential matches, communicate securely, and access personalized features through authenticated user accounts.
-
-## 🚀 Features
-
-- User registration and login with secure authentication
-- Profile creation and editing
-- Match discovery based on user preferences
-- Real-time messaging between matched users
-- Role-based access control for admins and users
-- Responsive UI with smooth navigation
+A web-based application designed to support a new employee benefit program that promotes healthy eating. Employees can deposit funds into their cafeteria accounts, receive bonus credits, browse menus from local restaurants, place food orders, and track delivery status.
 
 ## 🧰 Tech Stack
 
 **Backend:**
 - ASP.NET Core (C#)
 - Entity Framework Core
-- JWT Authentication
-- SQL Lite
+- ASP.NET Core Identity
+- SQL Server (Local DB)
 
 **Frontend:**
-- Angular
-- TypeScript
-- ngx-bootstrap
+- ASP.NET Core MVC
+- HTML & CSS
 - Bootstrap
   
